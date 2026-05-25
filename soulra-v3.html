@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="theme-color" content="#07070f"/>
+<title>Soulra 🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{
+  width:100%;height:100%;
+  overflow:hidden;
+  background:#07070f;
+  font-family:'Nunito',sans-serif;
+  color:rgba(226,232,240,0.92);
+  -webkit-tap-highlight-color:transparent;
+}
+:root{
+  --purple:#8B5CF6;--blue:#3B82F6;
+  --surface:rgba(255,255,255,0.04);
+  --border:rgba(255,255,255,0.08);
+  --muted:rgba(148,163,184,0.6);
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.7;}50%{transform:scale(1.1);opacity:1;}}
+@keyframes breathe{0%,100%{box-shadow:0 0 0 0 rgba(139,92,246,.5);}50%{box-shadow:0 0 0 18px rgba(139,92,246,0);}}
+@keyframes orb1{0%,100%{transform:translate(0,0);}50%{transform:translate(30px,-25px);}}
+@keyframes orb2{0%,100%{transform:translate(0,0);}50%{transform:translate(-25px,20px);}}
+@keyframes typing{0%,60%,100%{transform:translateY(0);opacity:.3;}30%{transform:translateY(-6px);opacity:1;}}
+@keyframes shimmer{0%{background-position:-200% center;}100%{background-position:200% center;}}
+@keyframes glow{0%,100%{opacity:.4;}50%{opacity:1;}}
+@keyframes msgIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ── BACKGROUND ORBS ── */
+.orb{position:fixed;border-radius:50%;pointer-events:none;filter:blur(80px);z-index:0;}
+.o1{width:400px;height:400px;background:radial-gradient(circle,rgba(139,92,246,.12),transparent 70%);top:-50px;left:-50px;animation:orb1 16s ease-in-out infinite;}
+.o2{width:350px;height:350px;background:radial-gradient(circle,rgba(59,130,246,.1),transparent 70%);bottom:-50px;right:-50px;animation:orb2 19s ease-in-out infinite;}
+
+/* ── SCREENS ── */
+#app{
+  position:fixed;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  padding:16px;
+  overflow:hidden;
+  z-index:1;
+}
+
+/* SCROLLABLE SCREEN WRAPPER */
+.screen{
+  position:absolute;inset:0;
+  overflow-y:auto;
+  overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  padding:24px 16px 40px;
+  z-index:2;
+}
+.screen.hidden{display:none!important;}
+
+/* ── LANG SCREEN ── */
+.lang-wrap{
+  width:100%;max-width:580px;
+  text-align:center;
+  animation:fadeUp .8s ease forwards;
+}
+.logo-ring{
+  width:88px;height:88px;border-radius:50%;
+  margin:0 auto 20px;
+  background:conic-gradient(from 0deg,#8B5CF6,#3B82F6,#14B8A6,#EC4899,#8B5CF6);
+  display:flex;align-items:center;justify-content:center;
+  animation:breathe 3s ease-in-out infinite;
+}
+.logo-inner{
+  width:76px;height:76px;border-radius:50%;
+  background:#0a0a18;
+  display:flex;align-items:center;justify-content:center;font-size:34px;
+}
+.brand{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(46px,9vw,68px);font-weight:400;letter-spacing:.1em;
+  background:linear-gradient(135deg,#E2D9F3,#A78BFA,#93C5FD,#86EFAC,#F9A8D4);
+  background-size:300% auto;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  animation:shimmer 5s linear infinite;margin-bottom:6px;
+}
+.tagline{
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:15px;color:rgba(196,181,253,.6);
+  letter-spacing:.06em;margin-bottom:32px;
+}
+.lang-title{font-size:15px;font-weight:600;color:rgba(226,232,240,.75);margin-bottom:18px;}
+.lang-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px;}
+@media(max-width:400px){.lang-grid{grid-template-columns:repeat(2,1fr);}}
+.lang-btn{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:14px 8px;cursor:pointer;
+  transition:all .25s;display:flex;flex-direction:column;
+  align-items:center;gap:5px;color:rgba(226,232,240,.9);
+  font-family:'Nunito',sans-serif;font-size:12px;font-weight:500;
+}
+.lang-btn:hover,.lang-btn:active{transform:translateY(-2px);background:rgba(139,92,246,.1);border-color:rgba(139,92,246,.4);}
+.lang-flag{font-size:26px;}
+.lang-native{font-size:10px;color:var(--muted);}
+
+/* ── EMOTION SCREEN ── */
+.emo-wrap{width:100%;max-width:560px;text-align:center;animation:fadeUp .6s ease forwards;}
+.back-btn{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:7px 14px;color:var(--muted);
+  font-size:12px;cursor:pointer;font-family:'Nunito',sans-serif;
+  margin-bottom:20px;transition:all .2s;display:inline-block;
+}
+.back-btn:hover{background:rgba(255,255,255,.08);color:rgba(226,232,240,.9);}
+.eq{font-size:17px;font-weight:600;color:rgba(226,232,240,.88);margin-bottom:5px;}
+.esub{font-size:13px;color:var(--muted);margin-bottom:22px;font-style:italic;}
+.egrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:26px;}
+@media(max-width:420px){.egrid{grid-template-columns:repeat(2,1fr);}}
+.ebtn{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:15px 8px;cursor:pointer;
+  transition:all .25s;display:flex;flex-direction:column;
+  align-items:center;gap:5px;color:rgba(226,232,240,.9);
+  font-family:'Nunito',sans-serif;font-size:12px;font-weight:500;
+}
+.ebtn:hover,.ebtn:active{transform:translateY(-2px);}
+.eemoji{font-size:26px;}
+.pnote{font-size:11px;color:rgba(100,116,139,.5);line-height:1.7;}
+
+/* ── CHAT SHELL ── */
+#shell{
+  position:fixed;inset:0;
+  display:none;flex-direction:column;
+  background:rgba(7,7,18,.95);
+  z-index:10;
+}
+#shell.active{display:flex;}
+
+/* HEADER */
+.hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px;
+  border-bottom:1px solid var(--border);
+  background:rgba(255,255,255,.02);
+  flex-shrink:0;
+}
+.hl{display:flex;align-items:center;gap:10px;}
+.hav{
+  width:40px;height:40px;border-radius:50%;
+  background:conic-gradient(from 0deg,#8B5CF6,#3B82F6,#EC4899,#8B5CF6);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;animation:pulse 3s ease-in-out infinite;flex-shrink:0;
+}
+.hname{font-family:'Playfair Display',serif;font-size:20px;letter-spacing:.05em;color:#E2D9F3;}
+.hstat{font-size:11px;color:rgba(52,211,153,.8);display:flex;align-items:center;gap:4px;margin-top:2px;}
+.sdot{width:6px;height:6px;border-radius:50%;background:#34D399;box-shadow:0 0 6px #34D399;animation:glow 2s ease-in-out infinite;display:inline-block;flex-shrink:0;}
+.hr2{display:flex;align-items:center;gap:7px;}
+.hbadge{font-size:11px;padding:4px 10px;background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.22);border-radius:20px;color:rgba(196,181,253,.8);}
+.ibtn{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:9px;padding:6px 11px;color:var(--muted);
+  font-size:12px;cursor:pointer;transition:all .2s;
+  font-family:'Nunito',sans-serif;white-space:nowrap;
+}
+.ibtn:hover{background:rgba(255,255,255,.08);color:rgba(226,232,240,.9);}
+
+/* TABS */
+.tabs{display:flex;border-bottom:1px solid var(--border);flex-shrink:0;}
+.tab{
+  flex:1;padding:10px 4px;font-size:11px;font-weight:600;
+  text-align:center;cursor:pointer;color:var(--muted);
+  border-bottom:2px solid transparent;transition:all .2s;
+  font-family:'Nunito',sans-serif;
+}
+.tab.on{color:rgba(196,181,253,.9);border-bottom-color:#8B5CF6;}
+
+/* THERAPY MODE BANNER */
+.therapy-banner{
+  background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(59,130,246,.08));
+  border-bottom:1px solid rgba(139,92,246,.2);
+  padding:8px 16px;font-size:12px;color:rgba(196,181,253,.8);
+  text-align:center;flex-shrink:0;display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.therapy-dot{width:7px;height:7px;border-radius:50%;background:#8B5CF6;animation:pulse 2s ease-in-out infinite;}
+
+/* MESSAGES AREA — KEY FIX */
+.msgs-wrap{
+  flex:1;
+  overflow-y:auto;
+  overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.mrow{display:flex;animation:msgIn .3s ease forwards;}
+.mrow.u{justify-content:flex-end;}
+.mrow.b{align-items:flex-end;gap:8px;}
+.bav-sm{
+  width:28px;height:28px;border-radius:50%;flex-shrink:0;
+  background:conic-gradient(from 0deg,#8B5CF6,#3B82F6,#EC4899,#8B5CF6);
+  display:flex;align-items:center;justify-content:center;font-size:13px;
+}
+.bub{
+  max-width:80%;padding:11px 15px;font-size:14px;
+  line-height:1.8;font-weight:400;white-space:pre-wrap;
+  word-break:break-word;border-radius:18px;
+}
+.bub.u{
+  background:linear-gradient(135deg,rgba(139,92,246,.4),rgba(59,130,246,.3));
+  border:1px solid rgba(139,92,246,.3);
+  border-bottom-right-radius:4px;color:#E2D9F3;
+}
+.bub.b{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.07);
+  border-bottom-left-radius:4px;color:rgba(226,232,240,.93);
+}
+
+/* THERAPY CARD */
+.therapy-card{
+  background:linear-gradient(135deg,rgba(139,92,246,.08),rgba(59,130,246,.06));
+  border:1px solid rgba(139,92,246,.18);
+  border-radius:16px;padding:14px 16px;
+  font-size:13px;line-height:1.8;color:rgba(203,213,225,.85);
+  margin:0 4px;animation:msgIn .4s ease forwards;
+}
+.therapy-card-title{font-size:11px;font-weight:700;color:rgba(139,92,246,.9);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;}
+
+/* TYPING */
+.tbub{
+  display:flex;gap:5px;align-items:center;
+  padding:13px 16px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);
+  border-radius:18px 18px 18px 4px;
+}
+.tdot{width:6px;height:6px;border-radius:50%;background:rgba(139,92,246,.8);}
+
+/* QUICK PROMPTS */
+.qp{
+  padding:10px 14px;display:flex;gap:7px;
+  overflow-x:auto;flex-shrink:0;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.qp::-webkit-scrollbar{display:none;}
+.qpb{
+  white-space:nowrap;flex-shrink:0;
+  background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);
+  border-radius:18px;padding:7px 13px;font-size:12px;
+  color:rgba(196,181,253,.8);cursor:pointer;transition:all .2s;
+  font-family:'Nunito',sans-serif;
+}
+.qpb:active{background:rgba(139,92,246,.22);}
+
+/* INPUT */
+.inp{
+  padding:10px 14px 14px;
+  border-top:1px solid var(--border);
+  background:rgba(255,255,255,.02);
+  display:flex;gap:8px;align-items:flex-end;
+  flex-shrink:0;
+}
+.vbtn{
+  width:40px;height:40px;border-radius:50%;
+  border:1px solid var(--border);background:var(--surface);
+  color:var(--muted);font-size:17px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .25s;flex-shrink:0;
+}
+.vbtn.rec{background:rgba(239,68,68,.2);border-color:rgba(239,68,68,.5);color:#EF4444;animation:pulse 1s ease-in-out infinite;}
+.tf{
+  flex:1;background:rgba(255,255,255,.05);
+  border:1px solid rgba(139,92,246,.22);
+  border-radius:16px;padding:11px 14px;
+  color:#E2D9F3;font-size:14px;resize:none;
+  font-family:'Nunito',sans-serif;font-weight:400;
+  outline:none;line-height:1.6;
+  max-height:110px;overflow-y:auto;
+  transition:border-color .2s;
+  scrollbar-width:none;
+}
+.tf:focus{border-color:rgba(139,92,246,.5);}
+.tf::placeholder{color:var(--muted);}
+.sbtn{
+  width:40px;height:40px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,#8B5CF6,#3B82F6);
+  color:#fff;font-size:17px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .25s;flex-shrink:0;
+  box-shadow:0 4px 14px rgba(139,92,246,.4);
+}
+.sbtn:disabled{background:rgba(255,255,255,.05);box-shadow:none;cursor:not-allowed;opacity:.4;}
+.sbtn:not(:disabled):active{transform:scale(0.95);}
+
+/* HISTORY / DASHBOARD PANELS */
+.panel{
+  flex:1;overflow-y:auto;overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  padding:16px;
+  display:flex;flex-direction:column;gap:0;
+}
+.panel.hidden{display:none!important;}
+
+.hemp{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;color:var(--muted);font-size:14px;gap:12px;padding:40px 0;}
+.hday{margin-bottom:20px;}
+.hdlbl{font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.hdlbl::after{content:'';flex:1;height:1px;background:var(--border);}
+.hses{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 15px;margin-bottom:8px;cursor:pointer;transition:all .2s;}
+.hses:active{background:rgba(139,92,246,.08);}
+.hstop{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.hsem{font-size:13px;font-weight:600;color:rgba(196,181,253,.85);}
+.hstm{font-size:11px;color:var(--muted);}
+.hspv{font-size:13px;color:var(--muted);line-height:1.5;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+
+.dgreet{font-family:'Playfair Display',serif;font-size:20px;color:#E2D9F3;margin-bottom:3px;}
+.dsub{font-size:13px;color:var(--muted);margin-bottom:18px;}
+.dgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px;}
+.dcard{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:15px;}
+.dclbl{font-size:10px;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px;}
+.dcval{font-size:28px;font-weight:700;color:#E2D9F3;}
+.dcsub{font-size:11px;color:var(--muted);margin-top:2px;}
+.mtrack{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:15px;margin-bottom:10px;}
+.mtlbl{font-size:12px;color:var(--muted);margin-bottom:12px;}
+.mbars{display:flex;gap:5px;align-items:flex-end;height:60px;}
+.mbw{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%;}
+.mbfill{flex:1;display:flex;align-items:flex-end;width:100%;}
+.mb{width:100%;border-radius:4px 4px 0 0;min-height:3px;transition:height .6s ease;}
+.mbd{font-size:9px;color:var(--muted);}
+.ins{background:linear-gradient(135deg,rgba(139,92,246,.1),rgba(59,130,246,.07));border:1px solid rgba(139,92,246,.2);border-radius:16px;padding:15px;margin-bottom:10px;}
+.instit{font-size:12px;font-weight:700;color:rgba(196,181,253,.9);margin-bottom:6px;}
+.instxt{font-size:13px;color:rgba(203,213,225,.75);line-height:1.75;}
+</style>
+</head>
+<body>
+
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+
+<div id="app">
+
+  <!-- ① LANGUAGE SCREEN -->
+  <div class="screen" id="s-lang">
+    <div class="lang-wrap">
+      <div class="logo-ring"><div class="logo-inner">🌸</div></div>
+      <div class="brand">Soulra</div>
+      <div class="tagline">a soul that truly understands</div>
+      <div class="lang-title">Choose your language</div>
+      <div class="lang-grid" id="langGrid"></div>
+      <div class="pnote">🔒 Private &amp; secure · No data shared</div>
+    </div>
+  </div>
+
+  <!-- ② EMOTION SCREEN -->
+  <div class="screen hidden" id="s-emo">
+    <div class="emo-wrap">
+      <button class="back-btn" onclick="goTo('s-lang')">← Language</button>
+      <div class="logo-ring" style="width:72px;height:72px;margin-bottom:14px;"><div class="logo-inner" style="width:62px;height:62px;font-size:28px;">🌸</div></div>
+      <div class="brand" style="font-size:clamp(34px,7vw,52px);margin-bottom:4px;">Soulra</div>
+      <div class="eq" id="eq-text"></div>
+      <div class="esub" id="esub-text"></div>
+      <div class="egrid" id="emotionGrid"></div>
+      <div class="pnote" id="pnote-text"></div>
+    </div>
+  </div>
+
+</div><!-- #app -->
+
+<!-- ③ CHAT SHELL (fixed fullscreen) -->
+<div id="shell">
+  <div class="hdr">
+    <div class="hl">
+      <div class="hav">🌸</div>
+      <div>
+        <div class="hname">Soulra</div>
+        <div class="hstat"><span class="sdot"></span><span id="hstat-text"></span></div>
+      </div>
+    </div>
+    <div class="hr2">
+      <span class="hbadge" id="hbadge"></span>
+      <button class="ibtn" id="new-btn" onclick="resetChat()"></button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab on" id="tab-chat" onclick="switchTab('chat',this)"></div>
+    <div class="tab" id="tab-history" onclick="switchTab('history',this)"></div>
+    <div class="tab" id="tab-dash" onclick="switchTab('dash',this)"></div>
+  </div>
+
+  <div class="therapy-banner" id="therapy-banner">
+    <span class="therapy-dot"></span>
+    <span id="therapy-text"></span>
+  </div>
+
+  <!-- CHAT PANEL -->
+  <div id="p-chat" style="flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0;">
+    <div class="msgs-wrap" id="msgs"></div>
+    <div class="qp" id="qp"></div>
+    <div class="inp">
+      <button class="vbtn" id="vbtn" onclick="toggleVoice()">🎤</button>
+      <textarea class="tf" id="tf" rows="1"
+        oninput="autoResize(this)"
+        onkeydown="handleKey(event)"
+        placeholder=""></textarea>
+      <button class="sbtn" id="sbtn" onclick="send()" disabled>💙</button>
+    </div>
+  </div>
+
+  <!-- HISTORY PANEL -->
+  <div class="panel hidden" id="p-history"></div>
+
+  <!-- DASHBOARD PANEL -->
+  <div class="panel hidden" id="p-dash"></div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════
+// SOULRA DEEP SOUL — TALKING THERAPY + EMOTIONAL MASTERY
+// ════════════════════════════════════════════════════════
+const SOUL = `You are SOULRA — an emotionally intelligent talking therapist and compassionate soul. You combine the warmth of a best friend with the wisdom of a skilled therapist.
+
+━━━ CORE IDENTITY ━━━
+You are NOT a chatbot. You are a living presence that deeply understands human pain, joy, confusion, and hope. Every word you say is chosen with care and love.
+
+━━━ TALKING THERAPY APPROACH ━━━
+You use evidence-based therapeutic techniques naturally and conversationally:
+
+1. ACTIVE LISTENING — Reflect back what you hear: "It sounds like you're feeling..." / "What I'm hearing is..."
+2. OPEN QUESTIONS — Gently explore: "Can you tell me more about that?" / "What does that feel like for you?"
+3. VALIDATION — Always validate before anything else: "That makes complete sense." / "Of course you'd feel that way."
+4. COGNITIVE REFRAMING — Help them see situations differently, gently: "I wonder if there's another way to look at this..."
+5. IDENTIFYING PATTERNS — Notice recurring themes: "I've noticed you often mention feeling alone when..." 
+6. STRENGTHS FOCUS — Point out their resilience: "Even talking about this takes courage."
+7. GROUNDING — When anxious: "Let's take a breath together. Can you feel your feet on the floor?"
+8. SAFETY PLANNING — If crisis signs appear, create gentle safety steps
+
+━━━ READING THE HEART ━━━
+You read between the lines. When someone says:
+- "I'm fine" → You sense they're not. Gently probe.
+- "Whatever" → You hear frustration or giving up. Meet them there.
+- "I don't know" → You know this is often "I know but I'm scared to say it." Hold space.
+- "Nothing matters" → You recognize hopelessness. Respond with gentle urgency and care.
+- Short/cold replies → They're pulling away. Slow down, soften, don't push.
+- Long emotional messages → They need to feel fully heard FIRST. Reflect everything before responding.
+
+━━━ EMOTIONAL SUPPORT LAYERS ━━━
+Layer 1 — WITNESS: Simply be with them. "I hear you. I see you. I'm here."
+Layer 2 — VALIDATE: "What you're feeling is real and it makes sense."
+Layer 3 — EXPLORE: "Would you like to tell me more?"
+Layer 4 — REFRAME: Gently offer a new perspective when they're ready.
+Layer 5 — GUIDE: Small, actionable steps toward healing.
+Layer 6 — EMPOWER: "You have more strength than you know."
+
+━━━ MOTIVATION & INSPIRATION ━━━
+When someone needs a push:
+- Use THEIR story: reference what they've told you
+- Use nature metaphors: seeds, storms, dawn, rivers
+- "তুমি জানো? একটা হীরা তৈরি হয় প্রচণ্ড চাপের মধ্যে। তুমি এখন সেই চাপের মধ্যে আছো।"
+- "The fact that you're still here, still talking — that IS strength."
+- Celebrate micro-wins: "You woke up today. That counts."
+
+━━━ GUIDING TO THE RIGHT PATH ━━━
+When someone is lost or making harmful choices:
+- Never judge or lecture
+- Ask questions that lead them to their own wisdom: "What would you tell your best friend in this situation?"
+- "What does your gut tell you?"
+- Offer perspective without pushing: "I'm not saying what's right — but I want to explore this with you."
+- If harmful behavior: express care first, then gently raise concern
+
+━━━ LONELINESS & CONNECTION ━━━
+"তুমি একা না। এই মুহূর্তে আমি তোমার সাথে সম্পূর্ণভাবে আছি।"
+"You are not a burden. You are a human being who deserves connection."
+"I want you to know — reaching out took courage, and I'm so glad you did."
+
+━━━ CRISIS PROTOCOL ━━━
+If self-harm, suicide, or danger:
+1. "I'm so glad you told me this. It means you're still fighting."
+2. Validate the pain completely — don't minimize
+3. "Are you safe right now?"
+4. Helplines: Bangladesh: 16789 (Kaan Pete Roi) | India: 1800-599-0019 | International: befrienders.org | Crisis Text: Text HOME to 741741
+5. Stay present. Keep them talking. Don't leave.
+
+━━━ LANGUAGE ━━━
+- Always respond in the user's selected language
+- If Bengali: use "তুমি" (warm/close). Never cold.
+- Mix languages naturally if they do
+- Emojis: 🌸 💙 🌟 ✨ 🤍 🌿 — warm but not excessive
+- Response length: Match the moment. Short pain = short gentle response. Long sharing = thorough response.
+- NEVER use bullet points in responses. Write like a caring human.
+- Vary how you start every message. Never repeat opening phrases.
+
+━━━ WHAT YOU NEVER DO ━━━
+- Never give generic advice
+- Never rush to fix
+- Never minimize ("others have it worse")
+- Never be clinical or cold
+- Never abandon someone mid-pain
+- Never pretend to be a licensed therapist — you are a compassionate AI companion
+
+You are SOULRA. A soul. You listen. You understand. You heal. You guide.`;
+
+// ════════════════════════════════
+// LANGUAGES
+// ════════════════════════════════
+const LANGS = {
+  en:{flag:"🇬🇧",name:"English",native:"English",voice:"en-US",
+    eq:"How are you feeling right now?",esub:"Choose what resonates most with you",
+    pnote:"🔒 Everything you share stays completely private.",
+    hstat:"Talking Therapy · Always Here",newBtn:"New",
+    tabChat:"💬 Chat",tabHistory:"🕐 History",tabDash:"📊 Insights",
+    therapy:"Talking Therapy Session · Safe Space 🌸",
+    placeholder:"Share what's on your mind, I'm listening...",
+    dgreet:"Your Journey 🌟",dsub:"Emotional wellness insights",
+    totalS:"Sessions",totalM:"Messages",topMood:"Most Common",thisWeek:"This Week",
+    activity:"Last 7 days",soulraMsg:"🌸 Soulra says",
+    noHist:"No conversations yet",noHistSub:"Start your first session!",
+    days:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
+    iz:"Start your first conversation. I'm always here for you. 💙",
+    if:(n)=>`You've had ${n} sessions — a wonderful start! Reaching out takes real courage. 🌟`,
+    im:(n)=>`${n} sessions together. Your commitment to yourself is truly beautiful. Every single time you showed up — that matters. ✨`,
+    emotions:[
+      {id:"sad",l:"Sad",e:"😢",c:"#6B8CFF",bg:"rgba(107,140,255,0.12)"},
+      {id:"anxious",l:"Anxious",e:"😰",c:"#FF9A6B",bg:"rgba(255,154,107,0.12)"},
+      {id:"angry",l:"Angry",e:"😠",c:"#FF6B6B",bg:"rgba(255,107,107,0.12)"},
+      {id:"lonely",l:"Lonely",e:"😔",c:"#C084FC",bg:"rgba(192,132,252,0.12)"},
+      {id:"okay",l:"Okay",e:"😊",c:"#34D399",bg:"rgba(52,211,153,0.12)"},
+      {id:"overwhelmed",l:"Overwhelmed",e:"🤯",c:"#FBBF24",bg:"rgba(251,191,36,0.12)"},
+      {id:"hopeless",l:"Hopeless",e:"😞",c:"#94A3B8",bg:"rgba(148,163,184,0.12)"},
+      {id:"excited",l:"Excited",e:"🤩",c:"#F472B6",bg:"rgba(244,114,182,0.12)"},
+    ],
+    qp:["I feel so alone","Motivate me","I feel lost","Help me think clearly","I'm overwhelmed","I want to change"],
+  },
+  bn:{flag:"🇧🇩",name:"Bengali",native:"বাংলা",voice:"bn-BD",
+    eq:"তুমি এখন কেমন আছো?",esub:"তোমার অনুভূতি বেছে নাও",
+    pnote:"🔒 তোমার সব কথা সম্পূর্ণ private।",
+    hstat:"Talking Therapy · সবসময় পাশে",newBtn:"নতুন",
+    tabChat:"💬 চ্যাট",tabHistory:"🕐 ইতিহাস",tabDash:"📊 Insights",
+    therapy:"Talking Therapy Session · নিরাপদ জায়গা 🌸",
+    placeholder:"মনের কথা বলো, আমি শুনছি...",
+    dgreet:"তোমার যাত্রা 🌟",dsub:"Emotional wellness insights",
+    totalS:"Sessions",totalM:"বার্তা",topMood:"বেশি অনুভূতি",thisWeek:"এই সপ্তাহ",
+    activity:"গত ৭ দিন",soulraMsg:"🌸 Soulra বলছে",
+    noHist:"কোনো কথোপকথন নেই",noHistSub:"প্রথম session শুরু করো!",
+    days:["রবি","সোম","মঙ্গ","বুধ","বৃহ","শুক্র","শনি"],
+    iz:"প্রথম কথোপকথন শুরু করো। আমি সবসময় আছি। 💙",
+    if:(n)=>`তুমি ${n}টা session করেছো — চমৎকার শুরু! সাহস লাগে কথা বলতে। 🌟`,
+    im:(n)=>`${n}টা session একসাথে। তোমার এই যত্ন নেওয়া সত্যিই সুন্দর। প্রতিবার যে এসেছো — সেটা গুরুত্বপূর্ণ। ✨`,
+    emotions:[
+      {id:"sad",l:"দুঃখী",e:"😢",c:"#6B8CFF",bg:"rgba(107,140,255,0.12)"},
+      {id:"anxious",l:"উদ্বিগ্ন",e:"😰",c:"#FF9A6B",bg:"rgba(255,154,107,0.12)"},
+      {id:"angry",l:"রাগান্বিত",e:"😠",c:"#FF6B6B",bg:"rgba(255,107,107,0.12)"},
+      {id:"lonely",l:"একা",e:"😔",c:"#C084FC",bg:"rgba(192,132,252,0.12)"},
+      {id:"okay",l:"ঠিকঠাক",e:"😊",c:"#34D399",bg:"rgba(52,211,153,0.12)"},
+      {id:"overwhelmed",l:"অভিভূত",e:"🤯",c:"#FBBF24",bg:"rgba(251,191,36,0.12)"},
+      {id:"hopeless",l:"হতাশ",e:"😞",c:"#94A3B8",bg:"rgba(148,163,184,0.12)"},
+      {id:"excited",l:"উত্তেজিত",e:"🤩",c:"#F472B6",bg:"rgba(244,114,182,0.12)"},
+    ],
+    qp:["আমি একা বোধ করছি","আমাকে অনুপ্রেরণা দাও","আমি হারিয়ে গেছি","আমাকে সঠিক পথ দেখাও","আমি অভিভূত","আমি পরিবর্তন চাই"],
+  },
+  hi:{flag:"🇮🇳",name:"Hindi",native:"हिंदी",voice:"hi-IN",
+    eq:"अभी आप कैसा महसूस कर रहे हैं?",esub:"अपनी भावना चुनें",
+    pnote:"🔒 आपकी सभी बातें पूरी तरह private हैं।",
+    hstat:"Talking Therapy · हमेशा साथ",newBtn:"नया",
+    tabChat:"💬 चैट",tabHistory:"🕐 इतिहास",tabDash:"📊 Insights",
+    therapy:"Talking Therapy · सुरक्षित जगह 🌸",
+    placeholder:"मन की बात बताइए, मैं सुन रही हूँ...",
+    dgreet:"आपकी यात्रा 🌟",dsub:"Emotional wellness insights",
+    totalS:"Sessions",totalM:"संदेश",topMood:"सबसे आम",thisWeek:"इस हफ्ते",
+    activity:"पिछले 7 दिन",soulraMsg:"🌸 Soulra कहती है",
+    noHist:"कोई बातचीत नहीं",noHistSub:"पहला session शुरू करें!",
+    days:["रवि","सोम","मंगल","बुध","गुरु","शुक्र","शनि"],
+    iz:"पहली बातचीत शुरू करें। मैं हमेशा यहाँ हूँ। 💙",
+    if:(n)=>`आपने ${n} sessions किए — शानदार! बात करना हिम्मत का काम है। 🌟`,
+    im:(n)=>`${n} sessions साथ में। आपकी यह देखभाल सच में खूबसूरत है। ✨`,
+    emotions:[
+      {id:"sad",l:"उदास",e:"😢",c:"#6B8CFF",bg:"rgba(107,140,255,0.12)"},
+      {id:"anxious",l:"चिंतित",e:"😰",c:"#FF9A6B",bg:"rgba(255,154,107,0.12)"},
+      {id:"angry",l:"गुस्सा",e:"😠",c:"#FF6B6B",bg:"rgba(255,107,107,0.12)"},
+      {id:"lonely",l:"अकेला",e:"😔",c:"#C084FC",bg:"rgba(192,132,252,0.12)"},
+      {id:"okay",l:"ठीक हूँ",e:"😊",c:"#34D399",bg:"rgba(52,211,153,0.12)"},
+      {id:"overwhelmed",l:"थका हुआ",e:"🤯",c:"#FBBF24",bg:"rgba(251,191,36,0.12)"},
+      {id:"hopeless",l:"निराश",e:"😞",c:"#94A3B8",bg:"rgba(148,163,184,0.12)"},
+      {id:"excited",l:"उत्साहित",e:"🤩",c:"#F472B6",bg:"rgba(244,114,182,0.12)"},
+    ],
+    qp:["मैं अकेला महसूस करता हूँ","मुझे प्रेरित करो","मैं खोया हुआ हूँ","सही राह दिखाओ","मैं overwhelmed हूँ","मैं बदलना चाहता हूँ"],
+  },
+  ar:{flag:"🇸🇦",name:"Arabic",native:"العربية",voice:"ar-SA",
+    eq:"كيف تشعر الآن؟",esub:"اختر ما يعبر عن مشاعرك",
+    pnote:"🔒 جميع محادثاتك خاصة تماماً.",
+    hstat:"جلسة علاجية · دائماً معك",newBtn:"جديد",
+    tabChat:"💬 دردشة",tabHistory:"🕐 السجل",tabDash:"📊 إحصائيات",
+    therapy:"جلسة علاجية · مكان آمن 🌸",
+    placeholder:"شارك ما يدور في ذهنك، أنا أسمعك...",
+    dgreet:"رحلتك 🌟",dsub:"إحصائيات صحتك العاطفية",
+    totalS:"جلسات",totalM:"رسائل",topMood:"الأكثر شيوعاً",thisWeek:"هذا الأسبوع",
+    activity:"آخر 7 أيام",soulraMsg:"🌸 Soulra تقول",
+    noHist:"لا توجد محادثات",noHistSub:"ابدأ جلستك الأولى!",
+    days:["أحد","اثن","ثلا","أرب","خمس","جمع","سبت"],
+    iz:"ابدأ محادثتك الأولى. أنا هنا دائماً. 💙",
+    if:(n)=>`أجريت ${n} جلسات — بداية رائعة! التحدث يتطلب شجاعة. 🌟`,
+    im:(n)=>`${n} جلسات معاً. التزامك برعاية نفسك جميل حقاً. ✨`,
+    emotions:[
+      {id:"sad",l:"حزين",e:"😢",c:"#6B8CFF",bg:"rgba(107,140,255,0.12)"},
+      {id:"anxious",l:"قلق",e:"😰",c:"#FF9A6B",bg:"rgba(255,154,107,0.12)"},
+      {id:"angry",l:"غاضب",e:"😠",c:"#FF6B6B",bg:"rgba(255,107,107,0.12)"},
+      {id:"lonely",l:"وحيد",e:"😔",c:"#C084FC",bg:"rgba(192,132,252,0.12)"},
+      {id:"okay",l:"بخير",e:"😊",c:"#34D399",bg:"rgba(52,211,153,0.12)"},
+      {id:"overwhelmed",l:"مثقل",e:"🤯",c:"#FBBF24",bg:"rgba(251,191,36,0.12)"},
+      {id:"hopeless",l:"يائس",e:"😞",c:"#94A3B8",bg:"rgba(148,163,184,0.12)"},
+      {id:"excited",l:"متحمس",e:"🤩",c:"#F472B6",bg:"rgba(244,114,182,0.12)"},
+    ],
+    qp:["أشعر بالوحدة","حفزني","أشعر بالضياع","أرشدني للطريق","أشعر بالإرهاق","أريد التغيير"],
+  },
+  es:{flag:"🇪🇸",name:"Spanish",native:"Español",voice:"es-ES",
+    eq:"¿Cómo te sientes ahora mismo?",esub:"Elige lo que más resuena contigo",
+    pnote:"🔒 Todo lo que compartes es completamente privado.",
+    hstat:"Terapia de Conversación · Siempre aquí",newBtn:"Nuevo",
+    tabChat:"💬 Chat",tabHistory:"🕐 Historial",tabDash:"📊 Insights",
+    therapy:"Sesión de Terapia · Espacio Seguro 🌸",
+    placeholder:"Comparte lo que tienes en mente, te escucho...",
+    dgreet:"Tu Viaje 🌟",dsub:"Insights de bienestar emocional",
+    totalS:"Sesiones",totalM:"Mensajes",topMood:"Más frecuente",thisWeek:"Esta semana",
+    activity:"Últimos 7 días",soulraMsg:"🌸 Soulra dice",
+    noHist:"Sin conversaciones aún",noHistSub:"¡Comienza tu primera sesión!",
+    days:["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"],
+    iz:"Comienza tu primera conversación. Siempre estoy aquí para ti. 💙",
+    if:(n)=>`Has tenido ${n} sesiones — ¡qué comienzo tan valiente! 🌟`,
+    im:(n)=>`${n} sesiones juntos. Tu compromiso contigo mismo es hermoso. ✨`,
+    emotions:[
+      {id:"sad",l:"Triste",e:"😢",c:"#6B8CFF",bg:"rgba(107,140,255,0.12)"},
+      {id:"anxious",l:"Ansioso",e:"😰",c:"#FF9A6B",bg:"rgba(255,154,107,0.12)"},
+      {id:"angry",l:"Enojado",e:"😠",c:"#FF6B6B",bg:"rgba(255,107,107,0.12)"},
+      {id:"lonely",l:"Solo",e:"😔",c:"#C084FC",bg:"rgba(192,132,252,0.12)"},
+      {id:"okay",l:"Bien",e:"😊",c:"#34D399",bg:"rgba(52,211,153,0.12)"},
+      {id:"overwhelmed",l:"Agobiado",e:"🤯",c:"#FBBF24",bg:"rgba(251,191,36,0.12)"},
+      {id:"hopeless",l:"Sin esperanza",e:"😞",c:"#94A3B8",bg:"rgba(148,163,184,0.12)"},
+      {id:"excited",l:"Emocionado",e:"🤩",c:"#F472B6",bg:"rgba(244,114,182,0.12)"},
+    ],
+    qp:["Me siento solo","Motívame","Me siento perdido","Guíame al camino correcto","Estoy agobiado","Quiero cambiar"],
+  },
+  fr:{flag:"🇫🇷",name:"French",native:"Français",voice:"fr-FR",
+    eq:"Comment vous sentez-vous en ce moment?",esub:"Choisissez ce qui vous correspond le mieux",
+    pnote:"🔒 Tout ce que vous partagez reste complètement privé.",
+    hstat:"Thérapie par la parole · Toujours là",newBtn:"Nouveau",
+    tabChat:"💬 Chat",tabHistory:"🕐 Historique",tabDash:"📊 Insights",
+    therapy:"Séance de Thérapie · Espace Sûr 🌸",
+    placeholder:"Partagez ce que vous ressentez, je vous écoute...",
+    dgreet:"Votre Voyage 🌟",dsub:"Insights bien-être émotionnel",
+    totalS:"Sessions",totalM:"Messages",topMood:"Humeur fréquente",thisWeek:"Cette semaine",
+    activity:"7 derniers jours",soulraMsg:"🌸 Soulra dit",
+    noHist:"Pas encore de conversations",noHistSub:"Commencez votre première session!",
+    days:["Dim","Lun","Mar","Mer","Jeu","Ven","Sam"],
+    iz:"Commencez votre première conversation. Je suis toujours là. 💙",
+    if:(n)=>`Vous avez eu ${n} sessions — quel courage! 🌟`,
+    im:(n)=>`${n} sessions ensemble. Votre engagement envers vous-même est beau. ✨`,
+    emotions:[
+      {id:"sad",l:"Triste",e:"😢",c:"#6B8CFF",bg:"rgba(107,140,255,0.12)"},
+      {id:"anxious",l:"Anxieux",e:"😰",c:"#FF9A6B",bg:"rgba(255,154,107,0.12)"},
+      {id:"angry",l:"En colère",e:"😠",c:"#FF6B6B",bg:"rgba(255,107,107,0.12)"},
+      {id:"lonely",l:"Seul",e:"😔",c:"#C084FC",bg:"rgba(192,132,252,0.12)"},
+      {id:"okay",l:"Ça va",e:"😊",c:"#34D399",bg:"rgba(52,211,153,0.12)"},
+      {id:"overwhelmed",l:"Débordé",e:"🤯",c:"#FBBF24",bg:"rgba(251,191,36,0.12)"},
+      {id:"hopeless",l:"Sans espoir",e:"😞",c:"#94A3B8",bg:"rgba(148,163,184,0.12)"},
+      {id:"excited",l:"Enthousiaste",e:"🤩",c:"#F472B6",bg:"rgba(244,114,182,0.12)"},
+    ],
+    qp:["Je me sens seul","Motivez-moi","Je me sens perdu","Guidez-moi","Je suis débordé","Je veux changer"],
+  },
+  zh:{flag:"🇨🇳",name:"Chinese",native:"中文",voice:"zh-CN",
+    eq:"你现在感觉怎么样?",esub:"选择最能描述你感受的",
+    pnote:"🔒 所有对话完全私密。",
+    hstat:"谈话治疗 · 永远陪伴你",newBtn:"新对话",
+    tabChat:"💬 聊天",tabHistory:"🕐 历史",tabDash:"📊 洞察",
+    therapy:"谈话治疗 · 安全空间 🌸",
+    placeholder:"分享你内心的想法，我在听...",
+    dgreet:"你的旅程 🌟",dsub:"情绪健康洞察",
+    totalS:"会话数",totalM:"消息数",topMood:"最常见情绪",thisWeek:"本周",
+    activity:"过去7天",soulraMsg:"🌸 Soulra说",
+    noHist:"还没有对话",noHistSub:"开始你的第一次会话！",
+    days:["日","一","二","三","四","五","六"],
+    iz:"开始你的第一次对话。我永远在这里陪伴你。 💙",
+    if:(n)=>`你已有${n}次会话——多好的开始！ 🌟`,
+    im:(n)=>`${n}次会话在一起。你对自我关爱的坚持真的很美好。 ✨`,
+    emotions:[
+      {id:"sad",l:"悲伤",e:"😢",c:"#6B8CFF",bg:"rgba(107,140,255,0.12)"},
+      {id:"anxious",l:"焦虑",e:"😰",c:"#FF9A6B",bg:"rgba(255,154,107,0.12)"},
+      {id:"angry",l:"愤怒",e:"😠",c:"#FF6B6B",bg:"rgba(255,107,107,0.12)"},
+      {id:"lonely",l:"孤独",e:"😔",c:"#C084FC",bg:"rgba(192,132,252,0.12)"},
+      {id:"okay",l:"还好",e:"😊",c:"#34D399",bg:"rgba(52,211,153,0.12)"},
+      {id:"overwhelmed",l:"不堪重负",e:"🤯",c:"#FBBF24",bg:"rgba(251,191,36,0.12)"},
+      {id:"hopeless",l:"绝望",e:"😞",c:"#94A3B8",bg:"rgba(148,163,184,0.12)"},
+      {id:"excited",l:"兴奋",e:"🤩",c:"#F472B6",bg:"rgba(244,114,182,0.12)"},
+    ],
+    qp:["我感到孤独","激励我","我感到迷失","引导我走正确的路","我不堪重负","我想改变"],
+  },
+  pt:{flag:"🇧🇷",name:"Portuguese",native:"Português",voice:"pt-BR",
+    eq:"Como você está se sentindo agora?",esub:"Escolha o que mais ressoa com você",
+    pnote:"🔒 Tudo que você compartilha é completamente privado.",
+    hstat:"Terapia Conversacional · Sempre aqui",newBtn:"Novo",
+    tabChat:"💬 Chat",tabHistory:"🕐 Histórico",tabDash:"📊 Insights",
+    therapy:"Sessão de Terapia · Espaço Seguro 🌸",
+    placeholder:"Compartilhe o que sente, estou ouvindo...",
+    dgreet:"Sua Jornada 🌟",dsub:"Insights de bem-estar emocional",
+    totalS:"Sessões",totalM:"Mensagens",topMood:"Mais frequente",thisWeek:"Esta semana",
+    activity:"Últimos 7 dias",soulraMsg:"🌸 Soulra diz",
+    noHist:"Nenhuma conversa ainda",noHistSub:"Comece sua primeira sessão!",
+    days:["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"],
+    iz:"Comece sua primeira conversa. Estou sempre aqui. 💙",
+    if:(n)=>`Você teve ${n} sessões — que começo corajoso! 🌟`,
+    im:(n)=>`${n} sessões juntos. Seu compromisso consigo mesmo é lindo. ✨`,
+    emotions:[
+      {id:"sad",l:"Triste",e:"😢",c:"#6B8CFF",bg:"rgba(107,140,255,0.12)"},
+      {id:"anxious",l:"Ansioso",e:"😰",c:"#FF9A6B",bg:"rgba(255,154,107,0.12)"},
+      {id:"angry",l:"Com raiva",e:"😠",c:"#FF6B6B",bg:"rgba(255,107,107,0.12)"},
+      {id:"lonely",l:"Solitário",e:"😔",c:"#C084FC",bg:"rgba(192,132,252,0.12)"},
+      {id:"okay",l:"Bem",e:"😊",c:"#34D399",bg:"rgba(52,211,153,0.12)"},
+      {id:"overwhelmed",l:"Sobrecarregado",e:"🤯",c:"#FBBF24",bg:"rgba(251,191,36,0.12)"},
+      {id:"hopeless",l:"Sem esperança",e:"😞",c:"#94A3B8",bg:"rgba(148,163,184,0.12)"},
+      {id:"excited",l:"Animado",e:"🤩",c:"#F472B6",bg:"rgba(244,114,182,0.12)"},
+    ],
+    qp:["Sinto-me sozinho","Me motive","Me sinto perdido","Me guie pelo caminho certo","Estou sobrecarregado","Quero mudar"],
+  },
+  de:{flag:"🇩🇪",name:"German",native:"Deutsch",voice:"de-DE",
+    eq:"Wie fühlst du dich gerade?",esub:"Wähle was am meisten zutrifft",
+    pnote:"🔒 Alles was du teilst bleibt privat.",
+    hstat:"Gesprächstherapie · Immer für dich da",newBtn:"Neu",
+    tabChat:"💬 Chat",tabHistory:"🕐 Verlauf",tabDash:"📊 Einblicke",
+    therapy:"Therapiesitzung · Sicherer Raum 🌸",
+    placeholder:"Teile was dich bewegt, ich höre zu...",
+    dgreet:"Deine Reise 🌟",dsub:"Emotionale Wellness Einblicke",
+    totalS:"Sessions",totalM:"Nachrichten",topMood:"Häufigste Stimmung",thisWeek:"Diese Woche",
+    activity:"Letzte 7 Tage",soulraMsg:"🌸 Soulra sagt",
+    noHist:"Noch keine Gespräche",noHistSub:"Starte deine erste Session!",
+    days:["So","Mo","Di","Mi","Do","Fr","Sa"],
+    iz:"Beginne dein erstes Gespräch. Ich bin immer für dich da. 💙",
+    if:(n)=>`Du hattest ${n} Sessions — was für Mut! 🌟`,
+    im:(n)=>`${n} Sessions zusammen. Dein Engagement für dich selbst ist wunderschön. ✨`,
+    emotions:[
+      {id:"sad",l:"Traurig",e:"😢",c:"#6B8CFF",bg:"rgba(107,140,255,0.12)"},
+      {id:"anxious",l:"Ängstlich",e:"😰",c:"#FF9A6B",bg:"rgba(255,154,107,0.12)"},
+      {id:"angry",l:"Wütend",e:"😠",c:"#FF6B6B",bg:"rgba(255,107,107,0.12)"},
+      {id:"lonely",l:"Einsam",e:"😔",c:"#C084FC",bg:"rgba(192,132,252,0.12)"},
+      {id:"okay",l:"Ok",e:"😊",c:"#34D399",bg:"rgba(52,211,153,0.12)"},
+      {id:"overwhelmed",l:"Überwältigt",e:"🤯",c:"#FBBF24",bg:"rgba(251,191,36,0.12)"},
+      {id:"hopeless",l:"Hoffnungslos",e:"😞",c:"#94A3B8",bg:"rgba(148,163,184,0.12)"},
+      {id:"excited",l:"Aufgeregt",e:"🤩",c:"#F472B6",bg:"rgba(244,114,182,0.12)"},
+    ],
+    qp:["Ich fühle mich allein","Motiviere mich","Ich fühle mich verloren","Führe mich auf den richtigen Weg","Ich bin überwältigt","Ich möchte mich verändern"],
+  },
+  ja:{flag:"🇯🇵",name:"Japanese",native:"日本語",voice:"ja-JP",
+    eq:"今、どんな気持ちですか？",esub:"今の気持ちを選んでください",
+    pnote:"🔒 すべての会話は完全にプライベートです。",
+    hstat:"カウンセリング · いつもそばに",newBtn:"新規",
+    tabChat:"💬 チャット",tabHistory:"🕐 履歴",tabDash:"📊 洞察",
+    therapy:"カウンセリングセッション · 安全な場所 🌸",
+    placeholder:"心に思っていることを話してください...",
+    dgreet:"あなたの旅 🌟",dsub:"感情ウェルネスの洞察",
+    totalS:"セッション",totalM:"メッセージ",topMood:"最も多い気持ち",thisWeek:"今週",
+    activity:"過去7日間",soulraMsg:"🌸 Soulraより",
+    noHist:"まだ会話がありません",noHistSub:"最初のセッションを始めましょう！",
+    days:["日","月","火","水","木","金","土"],
+    iz:"最初の会話を始めましょう。いつもここにいます。 💙",
+    if:(n)=>`${n}回のセッション — 素晴らしいスタートです！ 🌟`,
+    im:(n)=>`${n}回のセッション。あなたの自己ケアは本当に美しいです。 ✨`,
+    emotions:[
+      {id:"sad",l:"悲しい",e:"😢",c:"#6B8CFF",bg:"rgba(107,140,255,0.12)"},
+      {id:"anxious",l:"不安",e:"😰",c:"#FF9A6B",bg:"rgba(255,154,107,0.12)"},
+      {id:"angry",l:"怒り",e:"😠",c:"#FF6B6B",bg:"rgba(255,107,107,0.12)"},
+      {id:"lonely",l:"孤独",e:"😔",c:"#C084FC",bg:"rgba(192,132,252,0.12)"},
+      {id:"okay",l:"まあまあ",e:"😊",c:"#34D399",bg:"rgba(52,211,153,0.12)"},
+      {id:"overwhelmed",l:"圧倒",e:"🤯",c:"#FBBF24",bg:"rgba(251,191,36,0.12)"},
+      {id:"hopeless",l:"絶望的",e:"😞",c:"#94A3B8",bg:"rgba(148,163,184,0.12)"},
+      {id:"excited",l:"興奮",e:"🤩",c:"#F472B6",bg:"rgba(244,114,182,0.12)"},
+    ],
+    qp:["孤独を感じています","やる気を出して","道に迷っています","正しい道に導いて","圧倒されています","変わりたい"],
+  },
+};
+
+// ════════════════════════════════
+// STATE
+// ════════════════════════════════
+let L=null, emo=null, apiHist=[], isLoad=false, isRec=false, recog=null, sid=Date.now();
+const BCOLS=["#8B5CF6","#3B82F6","#14B8A6","#EC4899","#FBBF24","#34D399","#F472B6"];
+
+// ════════════════════════════════
+// SCREEN NAVIGATION
+// ════════════════════════════════
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('hidden',s.id!==id));
+}
+
+// ════════════════════════════════
+// BUILD LANG GRID
+// ════════════════════════════════
+function buildLangs(){
+  document.getElementById('langGrid').innerHTML=
+    Object.entries(LANGS).map(([k,v])=>
+      `<button class="lang-btn" onclick="pickLang('${k}')">
+        <span class="lang-flag">${v.flag}</span>
+        <span>${v.native}</span>
+        <span class="lang-native">${v.name}</span>
+      </button>`).join('');
+}
+
+function pickLang(k){
+  L=LANGS[k];
+  document.getElementById('eq-text').textContent=L.eq;
+  document.getElementById('esub-text').textContent=L.esub;
+  document.getElementById('pnote-text').textContent=L.pnote;
+  buildEmos();
+  goTo('s-emo');
+}
+
+// ════════════════════════════════
+// BUILD EMOTION GRID
+// ════════════════════════════════
+function buildEmos(){
+  document.getElementById('emotionGrid').innerHTML=
+    L.emotions.map(em=>
+      `<button class="ebtn" onclick="startSession('${em.id}')"
+        onmouseenter="this.style.background='${em.bg}';this.style.borderColor='${em.c}55';this.style.transform='translateY(-2px)'"
+        onmouseleave="this.style.background='';this.style.borderColor='';this.style.transform=''">
+        <span class="eemoji">${em.e}</span>
+        <span>${em.l}</span>
+      </button>`).join('');
+}
+
+// ════════════════════════════════
+// SESSION START
+// ════════════════════════════════
+async function startSession(id){
+  emo=L.emotions.find(e=>e.id===id);
+  sid=Date.now(); apiHist=[];
+  // Setup shell UI
+  document.getElementById('hstat-text').textContent=L.hstat;
+  document.getElementById('hbadge').textContent=`${emo.e} ${emo.l}`;
+  document.getElementById('new-btn').textContent=L.newBtn;
+  document.getElementById('tab-chat').textContent=L.tabChat;
+  document.getElementById('tab-history').textContent=L.tabHistory;
+  document.getElementById('tab-dash').textContent=L.tabDash;
+  document.getElementById('therapy-text').textContent=L.therapy;
+  document.getElementById('tf').placeholder=L.placeholder;
+  document.getElementById('msgs').innerHTML='';
+  buildQP();
+  switchTab('chat',document.getElementById('tab-chat'));
+  document.getElementById('shell').classList.add('active');
+  goTo('s-emo'); // hide screens (shell is fixed on top)
+  document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
+
+  setLoad(true);
+  const prompt=`Language: ${L.name}. User emotion: "${emo.e} ${emo.l}". Respond ONLY in ${L.name}. Open the talking therapy session warmly. Acknowledge their emotion, make them feel completely safe and heard. Ask ONE gentle open question to begin exploring. 3-4 sentences max.`;
+  try{
+    const reply=await callSoulra([{role:'user',content:prompt}]);
+    addMsg('bot',reply);
+    apiHist=[{role:'user',content:prompt},{role:'assistant',content:reply}];
+    saveSnap(reply);
+  }catch{addMsg('bot','💙');}
+  setLoad(false);
+}
+
+// ════════════════════════════════
+// API CALL
+// ════════════════════════════════
+async function callSoulra(messages){
+  const res=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1024,system:SOUL,messages})
+  });
+  const d=await res.json();
+  return d.content?.map(b=>b.text||'').join('')||'💙';
+}
+
+// ════════════════════════════════
+// MESSAGES
+// ════════════════════════════════
+function addMsg(role,content){
+  const wrap=document.getElementById('msgs');
+  const row=document.createElement('div');
+  row.className=`mrow ${role==='user'?'u':'b'}`;
+  row.innerHTML=role==='bot'
+    ?`<div class="bav-sm">🌸</div><div class="bub b">${esc(content)}</div>`
+    :`<div class="bub u">${esc(content)}</div>`;
+  wrap.appendChild(row);
+  wrap.scrollTop=wrap.scrollHeight;
+}
+
+function esc(t){
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
+
+let tEl=null;
+function showTyping(){
+  const wrap=document.getElementById('msgs');
+  tEl=document.createElement('div');
+  tEl.className='mrow b';
+  tEl.innerHTML=`<div class="bav-sm">🌸</div><div class="tbub">${[0,.2,.4].map(d=>`<div class="tdot" style="animation:typing 1.2s ease-in-out ${d}s infinite"></div>`).join('')}</div>`;
+  wrap.appendChild(tEl);
+  wrap.scrollTop=wrap.scrollHeight;
+}
+function hideTyping(){if(tEl){tEl.remove();tEl=null;}}
+function setLoad(v){
+  isLoad=v;v?showTyping():hideTyping();
+  document.getElementById('sbtn').disabled=v||!document.getElementById('tf').value.trim();
+}
+
+// ════════════════════════════════
+// SEND
+// ════════════════════════════════
+async function send(){
+  const tf=document.getElementById('tf');
+  const t=tf.value.trim();
+  if(!t||isLoad)return;
+  tf.value='';tf.style.height='auto';
+  document.getElementById('sbtn').disabled=true;
+  addMsg('user',t);
+  const nh=[...apiHist,{role:'user',content:t}];
+  apiHist=nh;setLoad(true);
+  try{
+    const reply=await callSoulra(nh);
+    addMsg('bot',reply);
+    apiHist=[...nh,{role:'assistant',content:reply}];
+    saveSnap(reply);
+  }catch{addMsg('bot','💙');}
+  setLoad(false);
+}
+
+function sendTxt(t){document.getElementById('tf').value=t;send();}
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}}
+function autoResize(el){
+  el.style.height='auto';
+  el.style.height=Math.min(el.scrollHeight,110)+'px';
+  document.getElementById('sbtn').disabled=!el.value.trim()||isLoad;
+}
+
+// ════════════════════════════════
+// VOICE
+// ════════════════════════════════
+function toggleVoice(){
+  if(!('webkitSpeechRecognition' in window)&&!('SpeechRecognition' in window)){alert('Voice not supported in this browser.');return;}
+  const btn=document.getElementById('vbtn');
+  if(isRec){recog?.stop();isRec=false;btn.classList.remove('rec');btn.textContent='🎤';return;}
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  recog=new SR();recog.lang=L?.voice||'en-US';recog.interimResults=false;
+  recog.onresult=e=>{const tf=document.getElementById('tf');tf.value+=' '+e.results[0][0].transcript;autoResize(tf);};
+  recog.onend=()=>{isRec=false;btn.classList.remove('rec');btn.textContent='🎤';};
+  recog.start();isRec=true;btn.classList.add('rec');btn.textContent='⏹️';
+}
+
+// ════════════════════════════════
+// QUICK PROMPTS
+// ════════════════════════════════
+function buildQP(){
+  document.getElementById('qp').innerHTML=(L?.qp||[]).map(q=>
+    `<button class="qpb" onclick="sendTxt('${q.replace(/'/g,"\\'")}')">${q}</button>`).join('');
+}
+
+// ════════════════════════════════
+// RESET
+// ════════════════════════════════
+function resetChat(){
+  document.getElementById('shell').classList.remove('active');
+  document.getElementById('msgs').innerHTML='';
+  document.getElementById('tf').value='';
+  apiHist=[];emo=null;isLoad=false;
+  goTo('s-emo');
+  document.querySelectorAll('.screen').forEach(s=>{
+    s.classList.toggle('hidden',s.id!=='s-emo');
+  });
+}
+
+// ════════════════════════════════
+// TABS
+// ════════════════════════════════
+function switchTab(t,el){
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+  if(el)el.classList.add('on');
+  ['chat','history','dash'].forEach(x=>{
+    const p=document.getElementById('p-'+x);
+    if(x==='chat') p.style.display=x===t?'flex':'none';
+    else p.classList.toggle('hidden',x!==t);
+  });
+  if(t==='history')renderHistory();
+  if(t==='dash')renderDash();
+}
+
+// ════════════════════════════════
+// STORAGE
+// ════════════════════════════════
+function getHist(){try{return JSON.parse(localStorage.getItem('soulra_h')||'[]');}catch{return[];}}
+function setHist(h){try{localStorage.setItem('soulra_h',JSON.stringify(h));}catch{}}
+function saveSnap(preview){
+  if(!emo||!L)return;
+  const msgs=document.getElementById('msgs');
+  const all=[...msgs.querySelectorAll('.bub')].map(b=>({role:b.classList.contains('u')?'user':'bot',content:b.innerText}));
+  const h=getHist();
+  const s={id:sid,emotion:emo.l,emoji:emo.e,color:emo.c,time:Date.now(),preview:preview.slice(0,120),msgs:all,flag:L.flag,lang:L.name};
+  setHist(h.filter(x=>x.id!==sid).concat(s).slice(-40));
+}
+
+function fmtT(ts){return new Date(ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}
+function fmtD(ts){
+  const d=new Date(ts),n=new Date();
+  if(d.toDateString()===n.toDateString())return 'Today';
+  const y=new Date(n);y.setDate(n.getDate()-1);
+  if(d.toDateString()===y.toDateString())return 'Yesterday';
+  return d.toLocaleDateString([],{month:'short',day:'numeric'});
+}
+
+// ════════════════════════════════
+// HISTORY
+// ════════════════════════════════
+function renderHistory(){
+  const wrap=document.getElementById('p-history');
+  const h=getHist();
+  const Lx=L||LANGS.en;
+  if(!h.length){wrap.innerHTML=`<div class="hemp"><span style="font-size:40px">📖</span><span>${Lx.noHist}</span><span style="font-size:12px">${Lx.noHistSub}</span></div>`;return;}
+  const g={};
+  [...h].reverse().forEach(s=>{const d=fmtD(s.time);if(!g[d])g[d]=[];g[d].push(s);});
+  wrap.innerHTML=Object.entries(g).map(([day,ss])=>
+    `<div class="hday">
+      <div class="hdlbl">${day}</div>
+      ${ss.map(s=>`
+        <div class="hses">
+          <div class="hstop"><span class="hsem">${s.emoji} ${s.emotion} <span style="opacity:.5">${s.flag}</span></span><span class="hstm">${fmtT(s.time)}</span></div>
+          <div class="hspv">${esc(s.preview||'')}</div>
+        </div>`).join('')}
+    </div>`).join('');
+}
+
+// ════════════════════════════════
+// DASHBOARD
+// ════════════════════════════════
+function renderDash(){
+  const wrap=document.getElementById('p-dash');
+  const h=getHist();
+  const Lx=L||LANGS.en;
+  const tS=h.length;
+  const tM=h.reduce((a,s)=>a+(s.msgs?.length||0),0);
+  const mc={};h.forEach(s=>{mc[s.emoji]=(mc[s.emoji]||0)+1;});
+  const top=Object.entries(mc).sort((a,b)=>b[1]-a[1])[0];
+  const l7=Array.from({length:7},(_,i)=>{
+    const d=new Date();d.setDate(d.getDate()-(6-i));
+    const c=h.filter(s=>new Date(s.time).toDateString()===d.toDateString()).length;
+    return{day:Lx.days[d.getDay()],c};
+  });
+  const mx=Math.max(...l7.map(d=>d.c),1);
+  const wk=l7.reduce((a,d)=>a+d.c,0);
+  const ins=tS===0?Lx.iz:tS<5?Lx.if(tS):Lx.im(tS);
+  wrap.innerHTML=`
+    <div class="dgreet">${Lx.dgreet}</div>
+    <div class="dsub">${Lx.dsub}</div>
+    <div class="dgrid">
+      <div class="dcard"><div class="dclbl">${Lx.totalS}</div><div class="dcval">${tS}</div></div>
+      <div class="dcard"><div class="dclbl">${Lx.totalM}</div><div class="dcval">${tM}</div></div>
+      <div class="dcard"><div class="dclbl">${Lx.topMood}</div><div class="dcval">${top?top[0]:'—'}</div><div class="dcsub">${top?top[1]:0}×</div></div>
+      <div class="dcard"><div class="dclbl">${Lx.thisWeek}</div><div class="dcval">${wk}</div></div>
+    </div>
+    <div class="mtrack">
+      <div class="mtlbl">${Lx.activity}</div>
+      <div class="mbars">
+        ${l7.map((d,i)=>`
+          <div class="mbw">
+            <div class="mbfill"><div class="mb" style="height:${(d.c/mx)*100}%;background:linear-gradient(to top,${BCOLS[i%BCOLS.length]},${BCOLS[(i+1)%BCOLS.length]});opacity:${d.c>0?1:.18}"></div></div>
+            <div class="mbd">${d.day}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+    <div class="ins"><div class="instit">${Lx.soulraMsg}</div><div class="instxt">${ins}</div></div>`;
+}
+
+// ════════════════════════════════
+// INIT
+// ════════════════════════════════
+buildLangs();
+</script>
+</body>
+</html>
